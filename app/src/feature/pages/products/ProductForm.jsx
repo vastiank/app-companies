@@ -7,33 +7,32 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import MainLayout from '../../../shared/templates/MainLayout';
 import {
-	postCompany,
-	putCompany,
-} from '../../../core/api/companies/companiesAPI';
+	postProduct,
+	putProduct,
+} from '../../../core/api/products/productsAPI';
 import { toast } from 'react-toastify';
 
-export default function CompanyForm() {
+export default function ProductForm() {
 	const navigate = useNavigate();
-	const { idCompanyParam } = useParams();
+	const { idProductParam } = useParams();
 
 	const formState = {
-		nit: '',
 		name: '',
-		address: '',
-		phone: '',
+		price: '',
+		companyId: sessionStorage.getItem('idCompanyParam'),
 	};
 	const [form, setForm] = useState(formState);
 
 	const createNewCompany = async () => {
-		await postCompany(form);
+		await postProduct(form);
 		toast.success('Registro creado con éxito');
-		navigate('/companies');
+		navigate(`/company/${sessionStorage.getItem('idCompanyParam')}/products`);
 	};
 
 	const updateCompany = async () => {
-		await putCompany(idCompanyParam, form);
+		await putProduct(idProductParam, form);
 		toast.success('Registro actualizado con éxito');
-		navigate('/companies');
+		navigate(`/company/${sessionStorage.getItem('idCompanyParam')}/products`);
 	};
 
 	const handleChange = (e) => {
@@ -44,36 +43,21 @@ export default function CompanyForm() {
 	};
 
 	useEffect(() => {
-		if (idCompanyParam !== undefined) {
+		if (idProductParam !== undefined) {
 			setForm({
-				name: sessionStorage.getItem('companyName'),
-				nit: sessionStorage.getItem('companyNit'),
-				phone: sessionStorage.getItem('companyPhone'),
-				address: sessionStorage.getItem('companyAddress'),
+				name: sessionStorage.getItem('productName'),
+				price: sessionStorage.getItem('productPrice'),
 			});
 		}
-	}, [idCompanyParam]);
+	}, []);
 
 	return (
 		<MainLayout>
 			<React.Fragment>
 				<Typography variant='h6' gutterBottom>
-					Empresa
+					Producto
 				</Typography>
 				<Grid container spacing={3}>
-					<Grid item xs={12} sm={6}>
-						<TextField
-							onChange={(e) => handleChange(e)}
-							required
-							id='nit'
-							name='nit'
-							label='NIT'
-							fullWidth
-							autoComplete='given-name'
-							variant='standard'
-							value={form.nit}
-						/>
-					</Grid>
 					<Grid item xs={12} sm={6}>
 						<TextField
 							onChange={(e) => handleChange(e)}
@@ -82,7 +66,7 @@ export default function CompanyForm() {
 							name='name'
 							label='Nombre'
 							fullWidth
-							autoComplete='family-name'
+							autoComplete='given-name'
 							variant='standard'
 							value={form.name}
 						/>
@@ -91,31 +75,18 @@ export default function CompanyForm() {
 						<TextField
 							onChange={(e) => handleChange(e)}
 							required
-							id='address'
-							name='address'
-							label='Dirección'
+							id='price'
+							name='price'
+							label='Precio'
 							fullWidth
-							autoComplete='shipping address-line1'
+							autoComplete='family-name'
 							variant='standard'
-							value={form.address}
-						/>
-					</Grid>
-					<Grid item xs={12} sm={6}>
-						<TextField
-							onChange={(e) => handleChange(e)}
-							required
-							id='phone'
-							name='phone'
-							label='Teléfono'
-							fullWidth
-							autoComplete='shipping address-line2'
-							variant='standard'
-							value={form.phone}
+							value={form.price}
 						/>
 					</Grid>
 				</Grid>
 				<div className='flex justify-center mt-5'>
-					{idCompanyParam !== undefined ? (
+					{idProductParam !== undefined ? (
 						<Button onClick={() => updateCompany()} variant='outlined'>
 							ACTUALIZAR
 						</Button>

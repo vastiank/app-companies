@@ -1,1 +1,1 @@
-export const API_PRODUCTS = '/api/products'
+export const API_PRODUCTS = '/api/products';

@@ -1,8 +1,7 @@
-import { getUsers } from "../api/users/usersAPI";
+import { getUsers } from '../api/users/usersAPI';
 
 export const validateRolUser = async (emailAuth) => {
-    const responseUsers = await getUsers();
-    const authUser = responseUsers.users.find((user) => user.email === emailAuth);
-    return authUser;
+	const responseUsers = await getUsers();
+	const authUser = responseUsers.users.find((user) => user.email === emailAuth);
+	return authUser;
 };
-
